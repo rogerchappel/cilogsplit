@@ -1,0 +1,7 @@
+Run npm ci
+npm ERR! code ERESOLVE
+npm ERR! ERESOLVE could not resolve
+npm ERR! While resolving: app@1.0.0
+npm ERR! Could not resolve dependency:
+npm ERR! peer react@^17 from legacy-widget@2.0.0
+Error: Process completed with exit code 1.
