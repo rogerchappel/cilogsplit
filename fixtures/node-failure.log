@@ -1,0 +1,15 @@
+> cilogsplit-demo@1.0.0 test
+> node --test
+
+TAP version 13
+# Subtest: adds two numbers
+ok 1 - adds two numbers
+# Subtest: handles missing config
+not ok 2 - handles missing config
+  ---
+  error: 'AssertionError [ERR_ASSERTION]: expected config to exist'
+  expected: true
+  actual: false
+  ...
+
+Error: Process completed with exit code 1.
