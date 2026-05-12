@@ -2,26 +2,29 @@
 
 ## Supported Versions
 
-Replace this section with the supported versions for `cilogsplit`.
+`cilogsplit` is pre-1.0. Security fixes are made on the default branch until versioned releases begin.
 
-Example:
-
-```md
 | Version | Supported |
 | --- | --- |
-| .x | Yes |
-| < .0 | No |
-```
+| `main` | Yes |
+| `< 0.1.0` | No public support commitment |
 
-If the project does not publish versioned releases yet, say that clearly.
+## Local-first posture
+
+`cilogsplit` is designed to be safe for sensitive CI logs:
+
+- It reads only stdin or a local file path explicitly provided by the user.
+- It does not call network services or CI provider APIs.
+- It does not include telemetry.
+- It redacts common token and secret-like values by default before rendering output.
+
+Redaction is a safety net, not a guarantee. Review output before sharing it outside your machine.
 
 ## Reporting a Vulnerability
 
 Please do not report suspected vulnerabilities in public issues, pull requests, or discussions.
 
-Ask maintainers for the private security reporting path before sharing details.
-
-If no private reporting path exists yet, ask maintainers through public project channels for a private reporting path. Do not include exploit details, secrets, personal data, or sensitive technical details in public messages.
+Ask maintainers for a private security reporting path before sharing details. If no private reporting path exists yet, ask through public project channels without including exploit details, secrets, personal data, or sensitive technical details.
 
 ## What to Include
 
@@ -29,29 +32,9 @@ When a private reporting path is available, include:
 
 - A clear description of the issue.
 - Affected versions, files, packages, workflows, or configuration.
-- Steps to reproduce, proof of concept, or attack scenario when safe to share.
+- Safe reproduction steps or a minimal proof of concept.
 - Potential impact.
 - Suggested mitigation, if known.
-
-## Response Expectations
-
-Maintainers review good-faith reports as capacity allows.
-
-Do not imply paid support, guaranteed response times, guaranteed fixes, or service-level agreements unless `cilogsplit` explicitly provides them.
-
-## Scope
-
-In scope:
-
-- Vulnerabilities in cilogsplit.
-- Insecure default configuration shipped by this project.
-- CI, release, or dependency guidance maintained by this project.
-
-Out of scope:
-
-- General support requests.
-- Requests for guaranteed maintenance timelines.
-- Issues in unrelated downstream projects.
 
 ## Disclosure
 
