@@ -15,7 +15,7 @@ For local development from this repository:
 ```sh
 npm install
 npm run build
-node dist/cli.js --help
+node dist/src/cli.js --help
 ```
 
 ## Usage
