@@ -22,7 +22,7 @@ export function renderMarkdown(result: SplitResult): string {
     parts.push('', `## ${escapeMd(card.id)} — ${escapeMd(card.title)}`, '', `- Severity: ${card.severity}`, `- Lines: ${card.lineStart}-${card.lineEnd}`, `- Hint: ${escapeMd(card.hint)}`, '', '```text');
     parts.push(...card.excerpt.map(line => `${line.number}: ${line.text}`));
     parts.push('```');
-    if (card.prompt) parts.push('', '<details><summary>Agent prompt</summary>', '', '```text', card.prompt, '```', '', '</details>');
+    if (card.prompt) parts.push('', '<details><summary>Agent prompt</summary>', '', '````text', card.prompt, '````', '', '</details>');
   }
 
   return parts.join('\n') + '\n';
