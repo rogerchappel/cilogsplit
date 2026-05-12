@@ -1,0 +1,3 @@
+export function helpText(): string {
+  return `cilogsplit - split CI logs into failure cards\n\nUsage:\n  cilogsplit split [logfile|-] [--format text|markdown|json] [--context N] [--max-cards N]\n  cilogsplit summarize [logfile|-] [--format text|markdown|json]\n  cilogsplit prompt [logfile|-] [--context N]\n\nCommands:\n  split      Render failure cards with excerpts (default)\n  summarize  Render only the summary in text, markdown, or JSON\n  prompt     Print copy-ready debugging prompts for each card\n\nSafety:\n  Logs stay local. Common tokens and secret-like values are redacted by default.\n  Pass --no-redact only when you are sure the output stays private.\n`;
+}
