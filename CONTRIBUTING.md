@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve `cilogsplit`.
+Thanks for helping improve `cilogsplit`. This project is intentionally local-first: changes must not add telemetry, remote log upload, or secret collection without an explicit design review.
 
 This project values small, reviewable contributions with clear verification.
 
@@ -37,7 +37,7 @@ Pull requests should:
 - Include tests or verification appropriate to the change.
 - Update documentation when behavior or usage changes.
 - Avoid unrelated formatting or dependency churn.
-- Avoid secrets, private contact details, and project-specific sensitive information.
+- Avoid secrets, private contact details, and project-specific sensitive information. Use fixtures that are synthetic, short, and safe to publish.
 
 ## Review Pack
 
@@ -77,3 +77,7 @@ If verification cannot be run, explain why and provide the exact command maintai
 ## Maintainer Review
 
 Maintainers may request narrower scope, clearer verification, additional tests, or safer defaults before merging.
+
+## Fixture Expectations
+
+Good fixtures are tiny, synthetic, and targeted at one failure mode. Do not copy private CI logs into the repository. If a real log inspired a fixture, rewrite project names, tokens, paths, and user data before committing it.
