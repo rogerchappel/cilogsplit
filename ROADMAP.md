@@ -1,38 +1,29 @@
 # Roadmap
 
 This roadmap describes intended direction, not a binding delivery promise.
-Review it regularly and update it as the project learns from users,
-contributors, and implementation constraints.
 
 ## Now
 
-- Define the smallest useful project scope.
-- Keep repository setup, documentation, and verification easy for contributors
-  to follow.
-- Ship small, reviewable improvements.
+- Keep the MVP deterministic, local-first, and easy to run from npm.
+- Improve pattern coverage for common CI failures without adding remote dependencies.
+- Keep fixtures small, synthetic, and representative.
 
 ## Next
 
-- Add the next capabilities that directly support the project's primary users.
-- Improve tests, docs, and examples around the most used workflows.
-- Reduce setup friction discovered during early use.
+- Add snapshot tests for stable Markdown output.
+- Support optional config files for custom patterns.
+- Add SARIF/JUnit-aware hints when logs include file and test names.
+- Improve grouping so cascading failures collapse under the first root-cause card.
 
 ## Later
 
-- Consider larger features after the core workflow is stable.
-- Add automation only where it removes repeated maintainer work.
-- Revisit packaging, deployment, or integration options based on real demand.
+- Explore shell completion.
+- Consider HTML output for pasteable triage reports.
+- Consider provider-specific log folding only if it remains offline and deterministic.
 
 ## Not Planned
 
-- Unrelated platform rewrites without a clear migration path.
-- Mandatory dependencies on a single ecosystem unless the project requires it.
-- Public release dates before maintainers are ready to commit to them.
-
-## Roadmap Review
-
-Before each major or meaningful minor release:
-
-- Move completed user-visible work into `CHANGELOG.md`.
-- Remove stale commitments.
-- Promote only the next reviewable set of work into `Now`.
+- Telemetry.
+- Uploading logs to hosted services.
+- AI summarization inside the CLI.
+- Replacing CI provider dashboards or observability platforms.
