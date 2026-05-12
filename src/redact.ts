@@ -1,6 +1,8 @@
-const REDACTIONS: Array<[RegExp, string]> = [
+type Replacement = string | ((substring: string) => string);
+
+const REDACTIONS: Array<[RegExp, Replacement]> = [
   [/gh[pousr]_[A-Za-z0-9_]{20,}/g, 'gh_***'],
-  [/(?:github|npm|slack|api|access|secret|token|password|passwd|pwd)[_-]?(?:token|key|secret|password)?\s*[=:]\s*[^\s'\"]+/gi, '$1=***'],
+  [/(\b(?:github|npm|slack|api|access|secret|token|password|passwd|pwd)[_-]?(?:token|key|secret|password)?\b)\s*[=:]\s*[^\s'\"]+/gi, '$1=***'],
   [/AKIA[0-9A-Z]{16}/g, 'AKIA***'],
   [/[A-Za-z0-9+/]{32,}={0,2}/g, value => (looksSecret(value) ? '***redacted***' : value)],
 ];
@@ -8,7 +10,9 @@ const REDACTIONS: Array<[RegExp, string]> = [
 export function redactText(text: string): string {
   let output = text;
   for (const [regex, replacement] of REDACTIONS) {
-    output = output.replace(regex, replacement as string);
+    output = typeof replacement === 'string'
+      ? output.replace(regex, replacement)
+      : output.replace(regex, replacement);
   }
   return output;
 }
