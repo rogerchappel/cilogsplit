@@ -5,10 +5,10 @@ This file defines how AI agents and human maintainers should work in `cilogsplit
 ## Project Context
 
 - Project: `cilogsplit`
-- Repository: ``
-- Primary maintainer: ``
-- Default branch: ``
-- Package manager: ``
+- Repository: `https://github.com/rogerchappel/cilogsplit`
+- Primary maintainer: `Roger Chappel`
+- Default branch: `main`
+- Package manager: `npm`
 - Primary verification command: `bash scripts/validate.sh`
 
 ## Core Principle
@@ -17,9 +17,9 @@ Move quickly, but keep every change reviewable, reversible, verifiable, and safe
 
 ## Branch Policy
 
-- Work on a branch for all repository changes.
-- Branch from the latest `` before editing.
-- Do not merge without explicit maintainer approval.
+- Prefer a branch for reviewable repository changes.
+- Branch from the latest `main` before editing unless the maintainer explicitly asks for a direct push.
+- Do not merge pull requests without explicit maintainer approval.
 - Do not rewrite shared history unless explicitly instructed.
 
 ## Atomic Commits
