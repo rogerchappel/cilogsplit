@@ -95,3 +95,16 @@ See [SECURITY.md](SECURITY.md). Please never paste secrets into public issues.
 ## License
 
 MIT
+
+## Release verification
+
+Run the same checks locally before opening a release PR:
+
+```bash
+npm run check
+npm test
+npm run build
+npm run smoke
+npm run package:smoke
+npm run release:check
+```
