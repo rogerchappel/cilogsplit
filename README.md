@@ -44,6 +44,14 @@ Generate copy-ready prompts for debugging agents:
 cilogsplit prompt ./ci.log --context 8 --max-cards 3
 ```
 
+Run the bundled GitHub Actions triage demo:
+
+```sh
+bash demo/run-github-actions-triage.sh
+```
+
+It writes Markdown cards, a JSON summary, and an agent prompt under `.tmp/demo-github-actions-triage/`. See [docs/tutorials/github-actions-triage.md](docs/tutorials/github-actions-triage.md) for the walkthrough.
+
 ## What it detects today
 
 - Node test failures and assertion errors
