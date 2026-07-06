@@ -76,6 +76,8 @@ npm test
 npm run check
 npm run build
 npm run smoke
+npm run package:smoke
+npm run release:check
 bash scripts/validate.sh
 ```
 
@@ -103,6 +105,10 @@ npm run smoke
 npm run package:smoke
 npm run release:check
 ```
+
+`npm run package:smoke` builds the CLI, verifies the published `cilogsplit` bin
+target, confirms tutorial docs and examples are present in the package
+allowlist, and prints the `npm pack --dry-run` tarball contents.
 
 The package metadata points at the public GitHub repository so npm and generated provenance link back to the source.
 

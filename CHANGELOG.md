@@ -13,6 +13,8 @@ format and uses semantic versioning when versioned releases are published.
 - Built-in failure patterns for Node, TypeScript, dependency, permission, Python, and GitHub Actions failures.
 - Fixture-backed tests, smoke script, and validation workflow.
 - Safety docs for offline operation and default redaction.
+- Package smoke verification now checks the CLI bin target, tutorial docs,
+  examples, package metadata, and npm files allowlist before the dry-run pack.
 
 ## Release Links
 
