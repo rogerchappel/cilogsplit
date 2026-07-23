@@ -16,6 +16,11 @@ format and uses semantic versioning when versioned releases are published.
 - Package smoke verification now checks the CLI bin target, tutorial docs,
   examples, package metadata, and npm files allowlist before the dry-run pack.
 
+### Fixed
+
+- ANSI color and presentation controls no longer hide anchored failure markers
+  during classification; original log text and line numbers remain intact.
+
 ## Release Links
 
 - Unreleased:

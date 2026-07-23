@@ -67,6 +67,9 @@ It writes Markdown cards, a JSON summary, and an agent prompt under `.tmp/demo-g
 - Python traceback and pytest-style failures
 - GitHub Actions error annotations
 
+Terminal color and presentation controls are ignored while matching these
+signals. Rendered cards still retain the original log text and line numbers.
+
 ## Safety and privacy
 
 - No network calls. No telemetry. No CI provider API access.
