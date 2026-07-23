@@ -15,3 +15,31 @@ test('splitLog respects maxCards', async () => {
   const result = splitLog(log, 'install fixture', { maxCards: 1 });
   assert.equal(result.cards.length, 1);
 });
+
+test('splitLog supports a zero-card limit', async () => {
+  const log = await readFile('fixtures/install-failure.log', 'utf8');
+  const result = splitLog(log, 'install fixture', { maxCards: 0 });
+  assert.equal(result.cards.length, 0);
+  assert.equal(result.summary.totalCards, 0);
+});
+
+test('splitLog rebuilds context and prompts when boundary hits merge', () => {
+  const log = Array.from({ length: 16 }, (_, index) => {
+    const line = index + 1;
+    if (line === 10) return 'src/a.ts(10,1): error TS2322: first failure';
+    if (line === 13) return 'src/b.ts(13,1): error TS2345: boundary failure';
+    return `context line ${line}`;
+  }).join('\n');
+
+  const result = splitLog(log, 'boundary fixture', { contextLines: 3 });
+  const card = result.cards[0];
+
+  assert.ok(card);
+  assert.equal(result.cards.length, 1);
+  assert.equal(card.hits.length, 2);
+  assert.equal(card.lineStart, 7);
+  assert.equal(card.lineEnd, 16);
+  assert.deepEqual(card.excerpt.map(line => line.number), [7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+  assert.match(card.prompt, /Lines: 7-16; first failure line 10/);
+  assert.match(card.prompt, /16: context line 16/);
+});

@@ -3,6 +3,8 @@ import { buildPrompt } from './prompts.js';
 import type { FailureCard, FailureHit, LogLine, SplitOptions } from './types.js';
 
 export function groupHits(lines: LogLine[], hits: FailureHit[], options: SplitOptions): FailureCard[] {
+  if (options.maxCards === 0) return [];
+
   const errorHits = hits.filter(hit => hit.pattern.severity === 'error');
   const primaryHits = errorHits.length > 0 ? errorHits : hits;
   const cards: FailureCard[] = [];
@@ -13,6 +15,8 @@ export function groupHits(lines: LogLine[], hits: FailureHit[], options: SplitOp
       existing.hits.push(hit);
       existing.lineStart = Math.min(existing.lineStart, Math.max(1, hit.line - options.contextLines));
       existing.lineEnd = Math.max(existing.lineEnd, Math.min(lines.length, hit.line + options.contextLines));
+      existing.excerpt = lines.slice(existing.lineStart - 1, existing.lineEnd);
+      existing.prompt = buildPrompt(existing);
       continue;
     }
 
