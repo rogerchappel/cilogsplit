@@ -44,6 +44,11 @@ Generate copy-ready prompts for debugging agents:
 cilogsplit prompt ./ci.log --context 8 --max-cards 3
 ```
 
+`--context` accepts integers from 0 to 50 and controls the lines included
+on each side of a detected failure. `--max-cards` accepts integers from 0
+to 100; use 0 to suppress card generation. Invalid, fractional, or
+out-of-range values exit with an error.
+
 Run the bundled GitHub Actions triage demo:
 
 ```sh
