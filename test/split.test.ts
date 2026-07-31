@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-import { splitLog } from '../src/split.js';
+import { splitLog, splitLogLines } from '../src/index.js';
 
 test('splitLog creates failure cards from node fixture', async () => {
   const log = await readFile('fixtures/node-failure.log', 'utf8');
@@ -43,3 +43,31 @@ test('splitLog rebuilds context and prompts when boundary hits merge', () => {
   assert.match(card.prompt, /Lines: 7-16; first failure line 10/);
   assert.match(card.prompt, /16: context line 16/);
 });
+
+const recognizedFailureLines = [
+  'installing dependencies',
+  'npm ERR! token ghp_abcdefghijklmnopqrstuvwxyz123456',
+  'cleanup complete',
+];
+
+for (const options of [{ redact: false }, {}, { redact: true }]) {
+  const label = 'redact' in options ? `redact: ${options.redact}` : 'default redaction';
+
+  test(`splitLogLines matches splitLog with ${label}`, () => {
+    const fromText = splitLog(recognizedFailureLines.join('\n'), 'inline', options);
+    const fromLines = splitLogLines(recognizedFailureLines, 'inline', options);
+
+    assert.deepEqual(fromLines, fromText);
+    assert.equal(fromLines.summary.totalFailures, 1);
+
+    const card = fromLines.cards[0];
+    assert.ok(card);
+    const expectedToken = options.redact === false
+      ? 'ghp_abcdefghijklmnopqrstuvwxyz123456'
+      : 'gh_***';
+
+    assert.ok(card.hits[0]?.text.includes(expectedToken));
+    assert.ok(card.excerpt[1]?.text.includes(expectedToken));
+    assert.ok(card.prompt.includes(expectedToken));
+  });
+}

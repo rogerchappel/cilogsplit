@@ -92,11 +92,17 @@ bash scripts/validate.sh
 ## Library API
 
 ```ts
-import { splitLog } from 'cilogsplit';
+import { splitLog, splitLogLines } from 'cilogsplit';
 
 const result = splitLog(logText, 'ci.log', { contextLines: 6, maxCards: 5 });
+const sameResult = splitLogLines(logText.split('\n'), 'ci.log', { contextLines: 6, maxCards: 5 });
 console.log(result.summary.headline);
 ```
+
+Both input APIs redact recognized secrets by default, including in failure hits,
+excerpts, and generated prompts. Pass `{ redact: false }` only when the returned
+data will remain in a trusted local context. `splitLog` and `splitLogLines` apply
+the same redaction option and produce equivalent results for equivalent input.
 
 ## Project status
 
