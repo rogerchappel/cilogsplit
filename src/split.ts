@@ -2,7 +2,7 @@ import { classifyLines } from './classifier.js';
 import { groupHits } from './grouping.js';
 import { normalizeOptions } from './options.js';
 import { parseLog } from './parser.js';
-import { redactLines, redactText } from './redact.js';
+import { redactText } from './redact.js';
 import { summarizeCards } from './summary.js';
 import type { SplitOptions, SplitResult } from './types.js';
 
@@ -27,5 +27,5 @@ export function splitLog(input: string, source = 'stdin', optionsInput: Partial<
 }
 
 export function splitLogLines(lines: string[], source = 'stdin', optionsInput: Partial<SplitOptions> = {}): SplitResult {
-  return splitLog(redactLines(lines).join('\n'), source, optionsInput);
+  return splitLog(lines.join('\n'), source, optionsInput);
 }
