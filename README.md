@@ -6,16 +6,22 @@ It is a log machete for the jungle: deterministic, offline, and boring in the be
 
 ## Install
 
-```sh
-npm install -g cilogsplit
-```
-
-For local development from this repository:
+The npm package is not available until the first tagged release is published.
+Before then, clone the repository and run the built CLI directly:
 
 ```sh
-npm install
+git clone https://github.com/rogerchappel/cilogsplit.git
+cd cilogsplit
+npm ci
 npm run build
 node dist/src/cli.js --help
+```
+
+After the first release is available on npm, install the CLI globally:
+
+```sh
+npm install -g cilogsplit
+cilogsplit --help
 ```
 
 ## Usage
@@ -125,6 +131,16 @@ target, confirms tutorial docs and examples are present in the package
 allowlist, and prints the `npm pack --dry-run` tarball contents.
 
 The package metadata points at the public GitHub repository so npm and generated provenance link back to the source.
+
+Tagged `v*.*.*` releases pack the package, publish that exact tarball to npm,
+and only then create the GitHub release. The workflow uses npm trusted
+publishing with GitHub Actions OIDC; maintainers must configure the npm package
+trusted publisher for repository `rogerchappel/cilogsplit` and workflow
+`.github/workflows/release.yml`. No long-lived npm token is used.
+
+`npm run release:workflow` checks the required OIDC permissions, public npm
+registry configuration, provenance flags, and publish-before-release ordering.
+The pull-request release dry run executes this contract without publishing.
 
 ## Contributing
 
