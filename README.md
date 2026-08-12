@@ -138,9 +138,12 @@ publishing with GitHub Actions OIDC; maintainers must configure the npm package
 trusted publisher for repository `rogerchappel/cilogsplit` and workflow
 `.github/workflows/release.yml`. No long-lived npm token is used.
 
-`npm run release:workflow` checks the required OIDC permissions, public npm
-registry configuration, provenance flags, and publish-before-release ordering.
-The pull-request release dry run executes this contract without publishing.
+Both release workflows install the exactly pinned npm CLI 11.5.1 prerequisite
+before dependencies and release checks. `npm run release:workflow` verifies that
+the pinned CLI remains at least 11.5.1, along with the required OIDC permissions,
+public npm registry configuration, provenance flags, and publish-before-release
+ordering. The pull-request release dry run executes this contract without
+publishing.
 
 ## Contributing
 
