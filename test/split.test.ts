@@ -16,6 +16,26 @@ test('splitLog respects maxCards', async () => {
   assert.equal(result.cards.length, 1);
 });
 
+test('splitLog keeps enriching an existing card after reaching maxCards', () => {
+  const log = Array.from({ length: 16 }, (_, index) => {
+    const line = index + 1;
+    if (line === 10) return 'src/a.ts(10,1): error TS2322: first failure';
+    if (line === 12) return 'src/b.ts(12,1): error TS2345: nearby failure';
+    return `context line ${line}`;
+  }).join('\n');
+
+  const result = splitLog(log, 'limited fixture', { contextLines: 3, maxCards: 1 });
+  const card = result.cards[0];
+
+  assert.ok(card);
+  assert.equal(result.cards.length, 1);
+  assert.deepEqual(card.hits.map(hit => hit.line), [10, 12]);
+  assert.equal(card.lineStart, 7);
+  assert.equal(card.lineEnd, 15);
+  assert.match(card.prompt, /Lines: 7-15; first failure line 10/);
+  assert.match(card.prompt, /12: src\/b\.ts\(12,1\): error TS2345: nearby failure/);
+});
+
 test('splitLog supports a zero-card limit', async () => {
   const log = await readFile('fixtures/install-failure.log', 'utf8');
   const result = splitLog(log, 'install fixture', { maxCards: 0 });
@@ -42,6 +62,29 @@ test('splitLog rebuilds context and prompts when boundary hits merge', () => {
   assert.deepEqual(card.excerpt.map(line => line.number), [7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
   assert.match(card.prompt, /Lines: 7-16; first failure line 10/);
   assert.match(card.prompt, /16: context line 16/);
+});
+
+test('splitLog merges transitive overlapping context windows into one card', () => {
+  const log = Array.from({ length: 30 }, (_, index) => {
+    const line = index + 1;
+    if (line === 10) return 'src/a.ts(10,1): error TS2322: first failure';
+    if (line === 16) return 'src/b.ts(16,1): error TS2345: bridge failure';
+    if (line === 22) return 'src/c.ts(22,1): error TS2304: final failure';
+    return `context line ${line}`;
+  }).join('\n');
+
+  const result = splitLog(log, 'chain fixture', { contextLines: 6, maxCards: 5 });
+  const card = result.cards[0];
+
+  assert.ok(card);
+  assert.equal(result.cards.length, 1);
+  assert.equal(card.id, 'card-1');
+  assert.deepEqual(card.hits.map(hit => hit.line), [10, 16, 22]);
+  assert.equal(card.lineStart, 4);
+  assert.equal(card.lineEnd, 28);
+  assert.deepEqual(card.excerpt.map(line => line.number), Array.from({ length: 25 }, (_, index) => index + 4));
+  assert.match(card.prompt, /Lines: 4-28; first failure line 10/);
+  assert.match(card.prompt, /22: src\/c\.ts\(22,1\): error TS2304: final failure/);
 });
 
 const recognizedFailureLines = [

@@ -10,15 +10,19 @@ export function groupHits(lines: LogLine[], hits: FailureHit[], options: SplitOp
   const cards: FailureCard[] = [];
 
   for (const hit of primaryHits) {
-    const existing = cards.find(card => Math.abs(card.firstFailureLine - hit.line) <= options.contextLines);
+    const hitLineStart = Math.max(1, hit.line - options.contextLines);
+    const hitLineEnd = Math.min(lines.length, hit.line + options.contextLines);
+    const existing = cards.find(card => hitLineStart <= card.lineEnd && hitLineEnd >= card.lineStart);
     if (existing) {
       existing.hits.push(hit);
-      existing.lineStart = Math.min(existing.lineStart, Math.max(1, hit.line - options.contextLines));
-      existing.lineEnd = Math.max(existing.lineEnd, Math.min(lines.length, hit.line + options.contextLines));
+      existing.lineStart = Math.min(existing.lineStart, hitLineStart);
+      existing.lineEnd = Math.max(existing.lineEnd, hitLineEnd);
       existing.excerpt = lines.slice(existing.lineStart - 1, existing.lineEnd);
       existing.prompt = buildPrompt(existing);
       continue;
     }
+
+    if (cards.length >= options.maxCards) continue;
 
     const excerpt = sliceContext(lines, hit.line, options.contextLines);
     const draft = {
@@ -34,7 +38,6 @@ export function groupHits(lines: LogLine[], hits: FailureHit[], options: SplitOp
       hint: hit.pattern.hint,
     } satisfies Omit<FailureCard, 'prompt'>;
     cards.push({ ...draft, prompt: buildPrompt(draft) });
-    if (cards.length >= options.maxCards) break;
   }
 
   return cards;
