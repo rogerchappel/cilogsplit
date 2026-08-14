@@ -129,7 +129,8 @@ npm run release:check
 ```
 
 `npm run package:smoke` builds the CLI, verifies the published `cilogsplit` bin
-target, confirms tutorial docs and examples are present in the package
+target, installs a freshly packed tarball and checks its exact `--version`
+output, confirms tutorial docs and examples are present in the package
 allowlist, and prints the `npm pack --dry-run` tarball contents.
 
 The package metadata points at the public GitHub repository so npm and generated provenance link back to the source.

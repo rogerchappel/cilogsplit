@@ -1,5 +1,12 @@
+import assert from 'node:assert/strict';
+import { execFile } from 'node:child_process';
 import { accessSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { promisify } from 'node:util';
+
+const execFileAsync = promisify(execFile);
 
 const pkg = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
 
@@ -25,3 +32,34 @@ for (const field of ['repository', 'bugs', 'homepage', 'license']) {
 }
 
 console.log('verified package metadata, docs, examples, and files allowlist');
+
+const tempDir = await mkdtemp(join(tmpdir(), 'cilogsplit-package-'));
+try {
+  const { stdout: packOutput } = await execFileAsync('npm', [
+    'pack',
+    '--json',
+    '--pack-destination',
+    tempDir,
+  ]);
+  const [{ filename }] = JSON.parse(packOutput);
+  const installDir = join(tempDir, 'install');
+  await execFileAsync('npm', [
+    'install',
+    '--prefix',
+    installDir,
+    '--ignore-scripts',
+    '--no-audit',
+    '--no-fund',
+    join(tempDir, filename),
+  ]);
+
+  const { stdout, stderr } = await execFileAsync(
+    join(installDir, 'node_modules', '.bin', 'cilogsplit'),
+    ['--version'],
+  );
+  assert.equal(stdout, `${pkg.version}\n`);
+  assert.equal(stderr, '');
+  console.log(`verified packed cilogsplit --version -> ${pkg.version}`);
+} finally {
+  await rm(tempDir, { recursive: true, force: true });
+}
