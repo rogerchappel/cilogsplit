@@ -32,7 +32,7 @@ export async function runCommand(args: CliArgs): Promise<string> {
 }
 
 async function readVersion(): Promise<string> {
-  const pkgUrl = new URL('../package.json', import.meta.url);
+  const pkgUrl = new URL('../../package.json', import.meta.url);
   const pkg = JSON.parse(await readFile(pkgUrl, 'utf8')) as { version: string };
   return pkg.version;
 }
