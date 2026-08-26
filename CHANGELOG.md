@@ -20,6 +20,10 @@ format and uses semantic versioning when versioned releases are published.
 
 - ANSI color and presentation controls no longer hide anchored failure markers
   during classification; original log text and line numbers remain intact.
+- `--context`/`--max-cards` (and `-c`/`-m`, plus `--flag=value` forms) now
+  reject non-canonical decimal spellings such as `2.0`, `1e1`, `0x10`, `0b101`,
+  or `0o17` with the documented integer error instead of silently coercing them;
+  regression tests cover the rejected forms and the CLI's nonzero exit code.
 
 ## Release Links
 

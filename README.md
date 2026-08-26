@@ -54,8 +54,9 @@ cilogsplit prompt ./ci.log --context 8 --max-cards 3
 on each side of a detected failure. Overlapping context windows are grouped
 into one card, including chains of overlapping windows. `--max-cards` accepts
 integers from 0 to 100 and limits new cards without dropping later hits that
-belong to an existing card; use 0 to suppress card generation. Invalid,
-fractional, or out-of-range values exit with an error.
+belong to an existing card; use 0 to suppress card generation. Values must be
+plain decimal integers; forms like `2.0`, `1e1`, `0x10`, or `0b101`, as well
+as fractional or out-of-range values, exit with an error.
 
 Run the bundled GitHub Actions triage demo:
 
