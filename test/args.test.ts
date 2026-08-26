@@ -42,6 +42,68 @@ test('parseArgs rejects invalid numeric options with the accepted range', () => 
   }
 });
 
+test('parseArgs rejects non-decimal spellings of numeric options', () => {
+  const rejectedForms = ['2.0', '1e1', '0x10', '0b101', '0o17', '1_0', '+5'];
+  for (const flag of ['--context', '--max-cards']) {
+    for (const value of rejectedForms) {
+      assert.throws(
+        () => parseArgs(['split', 'ci.log', flag, value]),
+        new RegExp(`${flag} must be an integer between `),
+        `${flag} ${value} must be rejected`,
+      );
+    }
+  }
+});
+
+test('parseArgs rejects non-decimal spellings in --flag=value form', () => {
+  const rejectedForms: Array<[token: string, flag: string]> = [
+    ['--context=2.0', '--context'],
+    ['--context=1e1', '--context'],
+    ['--context=0x10', '--context'],
+    ['--context=0b101', '--context'],
+    ['--max-cards=2.0', '--max-cards'],
+    ['--max-cards=1e1', '--max-cards'],
+    ['--max-cards=0x10', '--max-cards'],
+    ['--max-cards=0b101', '--max-cards'],
+  ];
+  for (const [token, flag] of rejectedForms) {
+    assert.throws(
+      () => parseArgs(['split', 'ci.log', token]),
+      new RegExp(`${flag} must be an integer between `),
+      `${token} must be rejected`,
+    );
+  }
+});
+
+test('parseArgs rejects non-decimal spellings with short flags -c and -m', () => {
+  assert.throws(
+    () => parseArgs(['split', 'ci.log', '-c', '2.0']),
+    /--context must be an integer between 0 and 50/,
+  );
+  assert.throws(
+    () => parseArgs(['split', 'ci.log', '-c', '0x10']),
+    /--context must be an integer between 0 and 50/,
+  );
+  assert.throws(
+    () => parseArgs(['split', 'ci.log', '-m', '1e1']),
+    /--max-cards must be an integer between 0 and 100/,
+  );
+  assert.throws(
+    () => parseArgs(['split', 'ci.log', '-m', '0b101']),
+    /--max-cards must be an integer between 0 and 100/,
+  );
+});
+
+test('parseArgs still accepts plain decimal integers in range', () => {
+  const shortForms = parseArgs(['split', 'ci.log', '-c', '10', '-m', '20']);
+  assert.equal(shortForms.contextLines, 10);
+  assert.equal(shortForms.maxCards, 20);
+
+  const equalsForms = parseArgs(['split', 'ci.log', '--context=10', '--max-cards=40']);
+  assert.equal(equalsForms.contextLines, 10);
+  assert.equal(equalsForms.maxCards, 40);
+});
+
 test('parseArgs rejects empty numeric option values', () => {
   assert.throws(
     () => parseArgs(['split', 'ci.log', '--context=']),
