@@ -51,8 +51,9 @@ function parseIntegerOption(
   rawValue: string,
   range: { min: number; max: number },
 ): number {
-  const value = rawValue.trim() === '' ? Number.NaN : Number(rawValue);
-  if (!Number.isInteger(value) || value < range.min || value > range.max) {
+  const candidate = rawValue.trim();
+  const value = Number(candidate);
+  if (!/^\d+$/.test(candidate) || value < range.min || value > range.max) {
     throw new Error(
       `${flag} must be an integer between ${range.min} and ${range.max} (received "${rawValue}")`,
     );
