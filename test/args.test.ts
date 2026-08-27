@@ -14,6 +14,39 @@ test('parseArgs supports prompt command', () => {
   assert.equal(parseArgs(['prompt', 'ci.log']).command, 'prompt');
 });
 
+test('parseArgs accepts options before an implicit logfile', () => {
+  const args = parseArgs(['--format', 'json', '--context=3', 'ci.log']);
+  assert.equal(args.command, 'split');
+  assert.equal(args.file, 'ci.log');
+  assert.equal(args.format, 'json');
+  assert.equal(args.contextLines, 3);
+});
+
+test('parseArgs accepts options before an explicit command', () => {
+  const args = parseArgs(['--format', 'json', 'summarize', 'ci.log']);
+  assert.equal(args.command, 'summarize');
+  assert.equal(args.file, 'ci.log');
+  assert.equal(args.format, 'json');
+});
+
+test('parseArgs rejects unknown option-like tokens directly', () => {
+  assert.throws(() => parseArgs(['--bogus']), /Unknown option: --bogus\. Run cilogsplit --help for usage\./);
+  assert.throws(() => parseArgs(['split', 'ci.log', '-x']), /Unknown option: -x/);
+});
+
+test('parseArgs treats help flags as global but help as a command', () => {
+  assert.equal(parseArgs(['split', '--help']).command, 'help');
+  assert.equal(parseArgs(['split', 'ci.log', '--help']).command, 'help');
+  assert.equal(parseArgs(['help']).command, 'help');
+});
+
+test('parseArgs treats version flags as global and version as a command only', () => {
+  assert.equal(parseArgs(['split', '--version']).command, 'version');
+  assert.equal(parseArgs(['split', 'ci.log', '-v']).command, 'version');
+  assert.equal(parseArgs(['version']).command, 'version');
+  assert.equal(parseArgs(['split', 'version']).file, 'version');
+});
+
 test('parseArgs accepts numeric option boundary values', () => {
   const args = parseArgs(['split', 'ci.log', '--context=0', '--max-cards', '0']);
   assert.equal(args.contextLines, 0);
