@@ -50,6 +50,14 @@ Generate copy-ready prompts for debugging agents:
 cilogsplit prompt ./ci.log --context 8 --max-cards 3
 ```
 
+Options may appear before or after an implicit logfile, so
+`cilogsplit --format json ./ci.log` is equivalent to
+`cilogsplit ./ci.log --format json`. Unknown option-like tokens fail with a
+usage hint instead of being read as filenames. The `-h`/`--help` and
+`-v`/`--version` flags are global and take effect in any position. The bare
+words `help` and `version` are commands only when they are the first argument;
+elsewhere they can be logfile names.
+
 `--context` accepts integers from 0 to 50 and controls the lines included
 on each side of a detected failure. Overlapping context windows are grouped
 into one card, including chains of overlapping windows. `--max-cards` accepts
