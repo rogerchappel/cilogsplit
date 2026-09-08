@@ -38,6 +38,8 @@ Read from stdin and render Markdown:
 cat ./ci.log | cilogsplit split - --format markdown
 ```
 
+Markdown output preserves fence-like log lines by choosing code-block delimiters longer than any backtick run in each excerpt or generated Agent prompt.
+
 Print a compact summary:
 
 ```sh
