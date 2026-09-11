@@ -41,7 +41,7 @@ CI logs are noisy and long. Humans and agents waste time scrolling through insta
 ## Safety
 
 - Local file/stdin only.
-- Redact common tokens and secret-like values in rendered output.
+- Redact GitHub/AWS tokens, secret-looking assignments, and unlabelled high-entropy base64 values in rendered output while preserving ordinary CI identifiers (commit SHAs, checksums, integrity digests, and file paths).
 - Never sends logs anywhere.
 
 ## Attribution

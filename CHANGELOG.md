@@ -18,6 +18,13 @@ format and uses semantic versioning when versioned releases are published.
 
 ### Fixed
 
+- Default redaction no longer erases ordinary CI data: hex commit SHAs,
+  `sha256:`/`sha512-` checksums, npm `integrity` digests, and long workspace
+  file paths now survive `redactText` unchanged, so FAIL lines and their
+  identifiers reach rendered cards intact. GitHub `gh[pousr]_` tokens, AWS
+  access key ids, secret-looking assignments, and unlabelled high-entropy
+  base64 secrets remain masked, and assignment masking now preserves the
+  original `:`/`=` separator instead of rewriting it to `=`.
 - ANSI color and presentation controls no longer hide anchored failure markers
   during classification; original log text and line numbers remain intact.
 - `--context`/`--max-cards` (and `-c`/`-m`, plus `--flag=value` forms) now
