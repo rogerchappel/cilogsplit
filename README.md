@@ -93,7 +93,8 @@ signals. Rendered cards still retain the original log text and line numbers.
 
 - No network calls. No telemetry. No CI provider API access.
 - Reads only stdin or a local file path you pass in.
-- Redacts common GitHub tokens, API/token assignments, AWS access keys, and high-entropy secret-like strings before rendering.
+- Redacts GitHub `gh[pousr]_` tokens, AWS access key ids, secret-looking `token=`/`token:` assignments (the key and original separator are kept; only the value is masked), and unlabelled high-entropy base64 strings before rendering.
+- Leaves ordinary CI identifiers intact: hex commit SHAs, `sha256:`/`sha512-` checksums and npm `integrity` digests, and long workspace file paths are not redacted.
 - Use `--no-redact` only for private local inspection.
 
 ## Verification
