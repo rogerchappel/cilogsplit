@@ -1,0 +1,12 @@
+Run npm ci on ubuntu-latest
+added 128 packages in 4s
+Resolved head 0123456789abcdef0123456789abcdef01234567 from origin/main
+verify sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 dist/bundle.js
+npm ERR! code EINTEGRITY
+npm ERR! Integrity check failed for ./cache/dep-0.3.2.tgz expected sha512-abcdefghijKLMNOPQRSTUVwxyz0123456789+/abcdefghijKLMNOPQRSTUVwxyz0123456789+/ab== from the registry
+FAIL src/deeply/nested/module/file/name/with/long/path/thing.test.ts (1.42s)
+AssertionError [ERR_ASSERTION]: expected the failing test path to survive redaction
+Test failed after 1 of 14 suites with api_token: supersecretvalue123 in the captured environment dump
+deploy step used token ghp_abcdefghijklmnopqrstuvwxyz123456 from the runner
+aws access key id AKIAIOSFODNN7EXAMPLE appeared in the debug env dump
+Error: Process completed with exit code 1.
