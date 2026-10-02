@@ -36,7 +36,8 @@
     "release:check": "npm run check && npm test && npm run build && npm run smoke && npm run package:smoke && npm run release:workflow",
     "pretest": "npm run build",
     "presmoke": "npm run build",
-    "lint": "npm run check"
+    "lint": "npm run check",
+    "docs:check": "node scripts/check-readme-install.mjs"
   },
   "keywords": [
     "ci",
