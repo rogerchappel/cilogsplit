@@ -51,7 +51,9 @@ function unknownOption(token: string): Error {
 }
 
 function requireValue(flag: string, value: string | undefined): string {
-  if (!value) throw new Error(`${flag} requires a value`);
+  if (!value || (value.startsWith('-') && value !== '-' && !/^-[0-9]+$/.test(value))) {
+    throw new Error(`${flag} requires a value`);
+  }
   return value;
 }
 

@@ -137,6 +137,21 @@ test('parseArgs still accepts plain decimal integers in range', () => {
   assert.equal(equalsForms.maxCards, 40);
 });
 
+test('parseArgs reports option-looking values as missing for value-taking flags', () => {
+  for (const flag of ['--context', '-c', '--max-cards', '-m', '--format', '-f']) {
+    for (const nextOption of ['--no-redact', '--help', '-v']) {
+      assert.throws(
+        () => parseArgs(['split', 'ci.log', flag, nextOption]),
+        new RegExp(`${flag.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')} requires a value`),
+        `${flag} must not consume ${nextOption}`,
+      );
+    }
+  }
+  assert.equal(parseArgs(['split', 'ci.log', '--context', '3']).contextLines, 3);
+  assert.equal(parseArgs(['split', 'ci.log', '-m', '4']).maxCards, 4);
+  assert.equal(parseArgs(['split', 'ci.log', '-f', 'json']).format, 'json');
+});
+
 test('parseArgs rejects empty numeric option values', () => {
   assert.throws(
     () => parseArgs(['split', 'ci.log', '--context=']),
