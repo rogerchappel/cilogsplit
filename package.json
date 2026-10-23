@@ -29,12 +29,11 @@
     "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
     "build": "tsc -p tsconfig.json",
     "check": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test dist/test/**/*.test.js",
+    "test": "npm run build && node --test dist/test/**/*.test.js",
     "smoke": "bash scripts/smoke.sh",
     "package:smoke": "npm run build && node scripts/verify-package.mjs && npm pack --dry-run",
     "release:workflow": "node scripts/verify-release-workflow.mjs",
     "release:check": "npm run check && npm test && npm run build && npm run smoke && npm run package:smoke && npm run release:workflow",
-    "pretest": "npm run build",
     "presmoke": "npm run build",
     "lint": "npm run check",
     "docs:check": "node scripts/check-readme-install.mjs"
