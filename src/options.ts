@@ -36,6 +36,8 @@ export function parseFormat(value: string | undefined): OutputFormat {
 }
 
 function clampInteger(value: number, min: number, max: number): number {
-  if (!Number.isFinite(value)) return min;
-  return Math.max(min, Math.min(max, Math.trunc(value)));
+  if (!Number.isInteger(value) || value < min || value > max) {
+    throw new RangeError(`Expected an integer between ${min} and ${max}; received ${value}.`);
+  }
+  return value;
 }
